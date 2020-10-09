@@ -173,20 +173,22 @@ out$Y<-out$V1*B1+out$V2*B2+out$error
 **TO DO: For the questions below write the needed code and a written response to the question. **
 
 **Question 1: Write a chunk in which you regress $Y$ on $V_1$ and $V_2$. Are your estimates of $\beta_1$ and $\beta_2$ biased?**
-
-**Answer:**
-
-
+```{r Q1}
+reg1 <- lm(data = out, Y ~ V1 + V2)
+summary(reg1)
+```
 **Question 2: Write a chunk in which you regress $Y$ on $V_1$ only. Is your estimate of $\beta_1$ biased?**
+```{r Q2}
+reg2 <- lm(data = out, Y ~ V1)
+summary(reg2)
 
-**Answer:**
-
-
+```
 **Question 3: Generate a new variable $Y_{adj}$ such that $Y_{adj}=Y-\beta_2*V_2$. Then regress $Y_{adj}$ on $V_1$. Is your estimate of $\beta_1$ biased? Can you explain why/why not?**
-
-**Answer:**
-
-
+```{r Q3}
+out <- mutate(out, Y_adj = Y - 6 * V2)
+reg3 <- lm(data = out, Y_adj ~ V1)
+summary(reg3)
+```
 **Question 4: The code below generates a scatter plot and regression line for the relationship between $V_1$ and $Y$ as well as $V_1$ and $Y_{adj}$. Submit an improved visualization of this data. Hint: you will need to delete the # to get the code to run **
 
 ```{r key 4}
