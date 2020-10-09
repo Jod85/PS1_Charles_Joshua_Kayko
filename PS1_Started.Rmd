@@ -198,18 +198,28 @@ summary(second_reg)
 **Question 3: Generate a new variable $Y_{adj}$ such that $Y_{adj}=Y-\beta_2*V_2$. Then regress $Y_{adj}$ on $V_1$. Is your estimate of $\beta_1$ biased? Can you explain why/why not?**
 
 **Answer:**
+```{r reg 3}
+intermediate_value <- coef(first_reg)[3]*out$V2
+adjY <- out$Y - intermediate_value
+third_reg <- lm(adjY ~ out$V1)
+summary(third_reg)
+
+This variable is not biased, the population coefficient is within the 95% confidence interval of the estimatied coefficient
+
+```
 
 
 **Question 4: The code below generates a scatter plot and regression line for the relationship between $V_1$ and $Y$ as well as $V_1$ and $Y_{adj}$. Submit an improved visualization of this data. Hint: you will need to delete the # to get the code to run **
 
 ```{r key 4}
-#plotted<-ggplot(out, aes(V1, y = value, color = variable)) + 
-#    geom_point(aes(y = Y, col = "Y")) + 
-#    geom_point(aes(y = adjY, col = "adjY"))+
-#    geom_smooth(method='lm', aes(y = Y, col = "Y"))+
-#    geom_smooth(method='lm', aes(y = adjY, col = "Y"))
 
-#plotted
+plotted<-ggplot(out, aes(V1, y = value, color = variable)) + 
+    geom_point(aes(y = Y, col = "Y")) + 
+    geom_point(aes(y = adjY, col = "adjY"))+
+    geom_smooth(method='lm', aes(y = Y, col = "Y"))+
+    geom_smooth(method='lm', aes(y = adjY, col = "Y"))
+
+plotted
 
 ```
 
