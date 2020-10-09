@@ -175,11 +175,24 @@ out$Y<-out$V1*B1+out$V2*B2+out$error
 **Question 1: Write a chunk in which you regress $Y$ on $V_1$ and $V_2$. Are your estimates of $\beta_1$ and $\beta_2$ biased?**
 
 **Answer:**
+```{r reg 1}
+first_reg <- lm(out$Y ~ out$V1 + out$V2, out)
+summary(first_reg)
 
+# There is a slight bias in the two variables, but the bias is negligible for both.
+# we can't reject the null hypothesis that the mean is 
+```
 
 **Question 2: Write a chunk in which you regress $Y$ on $V_1$ only. Is your estimate of $\beta_1$ biased?**
 
 **Answer:**
+
+```{r reg 2}
+second_reg <- lm(Y ~ V1, out)
+summary(second_reg)
+
+# Yes, Beta_1 is biased because the difference between the estimator and the population value is not 0
+```
 
 
 **Question 3: Generate a new variable $Y_{adj}$ such that $Y_{adj}=Y-\beta_2*V_2$. Then regress $Y_{adj}$ on $V_1$. Is your estimate of $\beta_1$ biased? Can you explain why/why not?**
