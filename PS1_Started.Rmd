@@ -191,7 +191,7 @@ summary(first_reg)
 second_reg <- lm(Y ~ V1, out)
 summary(second_reg)
 
-# Yes, Beta_1 is biased because the difference between the estimator and the population value is not 0. The population value for Beta_1(3) is not within our 95% confidence interval for Beta_1(7.548, 8.021)
+# Yes, Beta_1 is biased because the difference between the estimator and the population value is not 0. The population value for Beta_1(3) is not within our 95% confidence interval for Beta_1(7.548, 8.021).
 ```
 
 
@@ -204,7 +204,7 @@ adjY <- out$Y - intermediate_value
 third_reg <- lm(adjY ~ out$V1)
 summary(third_reg)
 
-#This variable is not biased, the population coefficient Beta_1(3) is within the 95% confidence interval of the estimatied coefficient Beta_1(2.926, 3.022)
+#This variable is not biased, as the population coefficient Beta_1(3) is within the 95% confidence interval of the estimated coefficient Beta_1(2.926, 3.022).
 
 ```
 
