@@ -214,11 +214,11 @@ summary(third_reg)
 
 ```{r key 4}
 
-plotted<-ggplot(out, aes(V1, y = value, color = variable)) + 
-    geom_point(aes(y = Y, col = "Y", shape = "Y")) + 
-    geom_point(aes(y = adjY, col = "adjY", shape = "adjY"))+
-    geom_smooth(method='lm', aes(y = Y, col = "Y"))+
-    geom_smooth(method='lm', aes(y = adjY, col = "adjY"))
+#plotted<-ggplot(out, aes(V1, y = value, color = variable)) + 
+#    geom_point(aes(y = Y, col = "Y", shape = "Y")) + 
+#    geom_point(aes(y = adjY, col = "adjY", shape = "adjY"))+
+#    geom_smooth(method='lm', aes(y = Y, col = "Y"))+
+#    geom_smooth(method='lm', aes(y = adjY, col = "adjY"))
 
 plotted1<-ggplot(out, aes(V1, y = value, color = variable)) + 
     geom_point(aes(y = Y, col = "Y")) + 
