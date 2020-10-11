@@ -173,32 +173,58 @@ out$Y<-out$V1*B1+out$V2*B2+out$error
 **TO DO: For the questions below write the needed code and a written response to the question. **
 
 **Question 1: Write a chunk in which you regress $Y$ on $V_1$ and $V_2$. Are your estimates of $\beta_1$ and $\beta_2$ biased?**
-```{r Q1}
-reg1 <- lm(data = out, Y ~ V1 + V2)
-summary(reg1)
+
+**Answer:**
+```{r reg 1}
+first_reg <- lm(out$Y ~ out$V1 + out$V2, out)
+summary(first_reg)
+
+# Our estimates of Beta_1 and Beta_2 are not biased.
+# The population the population value of Beta_1 (3) is  within our 95% confidence interval for Beta_1(2.871, 3.076), and the value of Beta_2 (6) is within our 95% confidence interval for Beta_2(5.912, 6.117).
 ```
+
 **Question 2: Write a chunk in which you regress $Y$ on $V_1$ only. Is your estimate of $\beta_1$ biased?**
-```{r Q2}
-reg2 <- lm(data = out, Y ~ V1)
-summary(reg2)
+
+**Answer:**
+
+```{r reg 2}
+second_reg <- lm(Y ~ V1, out)
+summary(second_reg)
+
+# Yes, Beta_1 is biased because the difference between the estimator and the population value is not 0. The population value for Beta_1(3) is not within our 95% confidence interval for Beta_1(7.548, 8.021)
+```
+
+
+**Question 3: Generate a new variable $Y_{adj}$ such that $Y_{adj}=Y-\beta_2*V_2$. Then regress $Y_{adj}$ on $V_1$. Is your estimate of $\beta_1$ biased? Can you explain why/why not?**
+
+**Answer:**
+```{r reg 3}
+intermediate_value <- coef(first_reg)[3]*out$V2
+adjY <- out$Y - intermediate_value
+third_reg <- lm(adjY ~ out$V1)
+summary(third_reg)
+
+#This variable is not biased, the population coefficient Beta_1(3) is within the 95% confidence interval of the estimatied coefficient Beta_1(2.926, 3.022)
 
 ```
-**Question 3: Generate a new variable $Y_{adj}$ such that $Y_{adj}=Y-\beta_2*V_2$. Then regress $Y_{adj}$ on $V_1$. Is your estimate of $\beta_1$ biased? Can you explain why/why not?**
-```{r Q3}
-out <- mutate(out, Y_adj = Y - 6 * V2)
-reg3 <- lm(data = out, Y_adj ~ V1)
-summary(reg3)
-```
+
+
 **Question 4: The code below generates a scatter plot and regression line for the relationship between $V_1$ and $Y$ as well as $V_1$ and $Y_{adj}$. Submit an improved visualization of this data. Hint: you will need to delete the # to get the code to run **
 
 ```{r key 4}
-#plotted<-ggplot(out, aes(V1, y = value, color = variable)) + 
-#    geom_point(aes(y = Y, col = "Y")) + 
-#    geom_point(aes(y = adjY, col = "adjY"))+
-#    geom_smooth(method='lm', aes(y = Y, col = "Y"))+
-#    geom_smooth(method='lm', aes(y = adjY, col = "Y"))
 
-#plotted
+plotted1<-ggplot(out, aes(V1, y = value, color = variable)) + 
+    geom_point(aes(y = Y, col = "Y"), color = "blue") + 
+    geom_smooth(method='lm', aes(y = Y, col = "Y"), color = "blue") + 
+    ggtitle("Y found for each V1") + ylab("Y")
+    
+plotted2<-ggplot(out, aes(V1, y = value, color = variable)) +
+    geom_point(aes(y = adjY, col = "adjY"), color = "red")+
+    geom_smooth(method='lm', aes(y = adjY, col = "Y"), color = "red") + 
+    ggtitle("Adj Y found for each V1") + ylab("Adj Y")
+
+plotted1
+plotted2
 
 ```
 
