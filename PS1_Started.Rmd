@@ -179,8 +179,13 @@ out$Y<-out$V1*B1+out$V2*B2+out$error
 first_reg <- lm(out$Y ~ out$V1 + out$V2, out)
 summary(first_reg)
 
+
 # Our estimates of Beta_1 and Beta_2 are not biased.
 # The population the population value of Beta_1 (3) is  within our 95% confidence interval for Beta_1(2.871, 3.076), and the value of Beta_2 (6) is within our 95% confidence interval for Beta_2(5.912, 6.117).
+
+# There is a slight bias in the two variables, but the bias is negligible for both.
+# we can't reject the null hypothesis that the mean is 
+
 ```
 
 **Question 2: Write a chunk in which you regress $Y$ on $V_1$ only. Is your estimate of $\beta_1$ biased?**
@@ -191,7 +196,11 @@ summary(first_reg)
 second_reg <- lm(Y ~ V1, out)
 summary(second_reg)
 
+
 # Yes, Beta_1 is biased because the difference between the estimator and the population value is not 0. The population value for Beta_1(3) is not within our 95% confidence interval for Beta_1(7.548, 8.021).
+
+# Yes, Beta_1 is biased because the difference between the estimator and the population value is not 0
+
 ```
 
 
@@ -206,12 +215,17 @@ summary(third_reg)
 
 #This variable is not biased, as the population coefficient Beta_1(3) is within the 95% confidence interval of the estimated coefficient Beta_1(2.926, 3.022).
 
+#This variable is not biased, the population coefficient is within the 95% confidence interval of the estimated coefficient
+#the adjY variable makes the estimation of V1 more accurate.
+
+
 ```
 
 
 **Question 4: The code below generates a scatter plot and regression line for the relationship between $V_1$ and $Y$ as well as $V_1$ and $Y_{adj}$. Submit an improved visualization of this data. Hint: you will need to delete the # to get the code to run **
 
 ```{r key 4}
+
 
 plotted1<-ggplot(out, aes(V1, y = value, color = variable)) + 
     geom_point(aes(y = Y, col = "Y"), color = "blue") + 
@@ -225,6 +239,67 @@ plotted2<-ggplot(out, aes(V1, y = value, color = variable)) +
 
 plotted1
 plotted2
+
+
+#plotted<-ggplot(out, aes(V1, y = value, color = variable)) + 
+#    geom_point(aes(y = Y, col = "Y", shape = "Y")) + 
+#    geom_point(aes(y = adjY, col = "adjY", shape = "adjY"))+
+#    geom_smooth(method='lm', aes(y = Y, col = "Y"))+
+#    geom_smooth(method='lm', aes(y = adjY, col = "adjY"))
+
+# plotted1<-ggplot(out, aes(V1, y = value, color = variable)) + 
+#     geom_point(aes(y = Y, col = "Y")) + 
+#     geom_smooth(method='lm', aes(y = Y, col = "Y_regLine"))
+# 
+# plotted2<-ggplot(out, aes(V1, y = value, color = variable)) + 
+#     geom_point(aes(y = adjY, col = "adjY"))+
+#     geom_smooth(method='lm', aes(y = adjY, col = "adjY_regLine"))
+# 
+# plotted3<-ggplot(out, aes(V1, y = value, color = variable)) + 
+#     geom_smooth(method='lm', aes(y = Y, col = "Y"))+
+#     geom_smooth(method='lm', aes(y = adjY, col = "adjY'"))
+#     
+# 
+# 
+# #plotted
+# plotted1
+# plotted2
+# plotted3
+
+#Kayko's Code:
+library(ggpubr)
+p1 <- ggplot(out, aes(V1, y = value)) + 
+    geom_point(aes(y = Y, col = "Y"), alpha=0.4) + 
+    geom_point(aes(y = adjY, col = "adjY"), alpha=0.4)+ 
+    geom_smooth(method='lm', aes(y = Y, col = "Y"))+
+    geom_smooth(method='lm', aes(y = adjY, col = "adjY")) +
+	scale_color_manual(values=c("#FFB81C", "#003594")) +
+	scale_y_continuous(limits=c(-35, 35)) +
+	theme_classic() +
+	theme(
+		legend.position = c(0.2, 0.90),
+		legend.key = element_rect(fill = "white", color = "white"),
+		legend.text = element_text(size = 10),
+		legend.title = element_blank(),
+		axis.title = element_text(size = 12, face = "bold"),
+		axis.text = element_text(size = 10)
+		) +
+	guides(color=guide_legend(override.aes=list(fill=NA)))
+p2 <- ggplot(out, aes(x=Y)) + 
+	geom_density(color="#00205B", fill="#003594", alpha=0.6) + 
+	theme(axis.text.x = element_blank(),  axis.text.y = element_blank()) + 
+	scale_x_continuous(limits=c(-35, 35)) + 
+	scale_y_continuous(limits=c(0, 0.125)) +
+	coord_flip() +
+	theme_void()
+p3 <- ggplot(out, aes(x=adjY)) + 
+	geom_density(color="#B58500", fill="#FFB81C", alpha=0.6) + 
+	theme(axis.text.x = element_blank(),  axis.text.y = element_blank()) + 
+	scale_x_continuous(limits=c(-35, 35)) + 
+	coord_flip() +
+	theme_void()
+improved <- ggarrange(p1, p2, p3, widths=c(4, 0.5, 0.5), ncol=3)
+annotate_figure(improved, top = text_grob("Omitted Variable Bias in Y vs. adjY", face = "bold", size = "14"))
 
 ```
 
